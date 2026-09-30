@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  sync-api:
+    build: .
+    container_name: excel-sync-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./incoming_data:/app/incoming_data
+      - ./processed:/app/processed
+      - ./logs:/app/logs
+      - ./data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/sync_data.db
+      - INCOMING_DIR=./incoming_data
+      - WATCH_INTERVAL=30
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
