@@ -4,6 +4,7 @@ import { DataTable } from './components/DataTable';
 import { SyncLogs } from './components/SyncLogs';
 import { ToastContainer } from './components/ToastContainer';
 import { Architecture } from './components/Architecture';
+import { SetupGuide } from './components/SetupGuide';
 import { useToast } from './hooks/useSyncSimulation';
 import { mockRecords, mockLogs, mockStats } from './data/mockData';
 import { SyncRecord, SyncLog, SyncStats, SyncEvent } from './types';
@@ -14,12 +15,13 @@ import {
   Code2,
   FolderSync,
   Bell,
+  Rocket,
 } from 'lucide-react';
 
-type Tab = 'dashboard' | 'data' | 'logs' | 'architecture';
+type Tab = 'dashboard' | 'data' | 'logs' | 'architecture' | 'setup';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
+  const [activeTab, setActiveTab] = useState<Tab>('setup');
   const [records, setRecords] = useState<SyncRecord[]>(mockRecords);
   const [logs, setLogs] = useState<SyncLog[]>(mockLogs);
   const [stats, setStats] = useState<SyncStats>(mockStats);
@@ -161,6 +163,7 @@ export default function App() {
   }, [addToast, records.length, logs.length]);
 
   const tabs = [
+    { id: 'setup' as Tab, label: '🚀 Запуск', icon: Rocket },
     { id: 'dashboard' as Tab, label: 'Дашборд', icon: LayoutDashboard },
     { id: 'data' as Tab, label: 'Данные', icon: Table2 },
     { id: 'logs' as Tab, label: 'Логи', icon: ScrollText },
@@ -250,6 +253,9 @@ export default function App() {
         )}
         {activeTab === 'architecture' && (
           <Architecture />
+        )}
+        {activeTab === 'setup' && (
+          <SetupGuide />
         )}
       </main>
 
